@@ -39,7 +39,7 @@ class CursoImpartidoResource extends Resource
                         name: 'programa',
                         titleAttribute: 'nombre',
                     )->native(true)
-                    ->required(),
+                    ->required()->placeholder('- Ninguno -')->searchable()->preload(),
                 Select::make('tipo')->options([
                     'Curso' => 'Curso',
                     'Curso en Linea' => 'Curso en Linea',
@@ -47,12 +47,12 @@ class CursoImpartidoResource extends Resource
                     'Taller' => 'Taller',
                     'Mixto' => 'Mixto',
                     'Semi-Prescencial' => 'Semi-Prescencial',
-                ])->required(),
+                ])->required()->placeholder('- Ninguno -'),
                 Select::make('nivel')->options([
                     'Licenciatura' => 'Licenciatura',
                     'Maestía' => 'Maestía',
                     'Doctorado' => 'Doctorado',
-                ])->required(),
+                ])->required()->placeholder('- Ninguno -'),
                 Forms\Components\TextInput::make('ciclo')
                     ->required()
                     ->maxLength(10),
@@ -65,9 +65,15 @@ class CursoImpartidoResource extends Resource
                 Select::make('cargo')->options([
                     'Con cargo' => 'Con cargo',
                     'Asigantura' => 'Asigantura',
-                ])->required(),
-                Forms\Components\TextInput::make('anio')
-                    ->required()->label('Año'),
+                ])->required()->placeholder('- Ninguno -'),
+                Select::make('anio')
+                    ->label('Año')
+                    ->options(array_combine(
+                        range(date('Y'), 2020), // Desde este año hasta 2020
+                        range(date('Y'), 2020)
+                    ))
+                    ->searchable()
+                    ->required(),
                 Textarea::make('tecnologias')->label('Tecnologías utilizadas')
                     ->required()
                     ->maxLength(400)->autosize()->columnSpanFull(),

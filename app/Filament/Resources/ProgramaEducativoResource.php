@@ -19,7 +19,8 @@ class ProgramaEducativoResource extends Resource
     protected static ?string $model = ProgramaEducativo::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationGroup = 'Estructura';
+    protected static ?int $navigationSort = 3;
     public static function form(Form $form): Form
     {
         return $form
@@ -32,7 +33,7 @@ class ProgramaEducativoResource extends Resource
                     ->relationship(
                         name: 'departamento',
                         titleAttribute: 'nombre',
-                    )->native(true)
+                    )->native(true)->searchable()->preload()
                     ->required(),
             ]);
     }
@@ -48,8 +49,7 @@ class ProgramaEducativoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('Creado')
                     ->dateTime()
-                    ->sortable()
-                    ,
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

@@ -48,16 +48,16 @@ class TitulacionResource extends Resource
 
                 ])->columnSpanFull()->columns(2),
                 Section::make()->schema([
-                    Select::make('programa_id')
+                    Select::make('programa_id')->placeholder('- Ninguno -')
                         ->label('Programa Educativo')
                         ->relationship(
                             name: 'programa',
                             titleAttribute: 'nombre',
                         )->native(true)
-                        ->required(),
-                    Select::make('nivel')
+                        ->required()->searchable()->preload(),
+                    Select::make('nivel')->placeholder('- Ninguno -')
                         ->options(Titulacion::niveles()),
-                    Select::make('participacion')
+                    Select::make('participacion')->placeholder('- Ninguno -')
                         ->options(Titulacion::participaciones()),
                     Select::make('tipo_tutoria')->label('Tipo de tutoria')
                         ->options(Titulacion::tiposTutoria())

@@ -26,7 +26,7 @@ class FormacionAcademicaResource extends Resource
     protected static ?string $navigationGroup = 'Mi Perfil';
     protected static ?string $navigationLabel = 'Formación Académica';
 
-        public static function getEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
             ->where('user_id', Auth::id());
@@ -51,16 +51,14 @@ class FormacionAcademicaResource extends Resource
                 ->required(),
 
             Select::make('conocimiento_id')
-                ->label('Área de Conocimiento')
+                ->label('Área de Conocimiento')->searchable()->preload()
                 ->relationship(name: 'conocimiento', titleAttribute: 'nombre', modifyQueryUsing: fn($query) => $query->where('tipo', 'Área de Conocimiento'))
-
                 ->required()
                 ->native(false),
 
             Select::make('disciplina_id')
-                ->label('Disciplina')
+                ->label('Disciplina')->searchable()->preload()
                 ->relationship(name: 'disciplina', titleAttribute: 'nombre', modifyQueryUsing: fn($query) => $query->where('tipo', 'Disciplina'))
-
                 ->required()
                 ->native(false),
 
@@ -68,14 +66,16 @@ class FormacionAcademicaResource extends Resource
 
             TextInput::make('pais')->label('País')->required(),
 
-            DatePicker::make('anio')
+            Select::make('anio')
                 ->label('Año')
-                ->native(false) // desactiva el picker nativo del navegador
-                ->displayFormat('Y') // muestra solo el año
-                ->format('Y') // guarda como solo el año en la base de datos
+                ->options(array_combine(
+                    range(date('Y'), 2020), // Desde este año hasta 2020
+                    range(date('Y'), 2020)
+                ))
+                ->searchable()
                 ->required(),
             ToggleButtons::make('curso')->label('En curso')->boolean()->grouped(),
-        ]);
+        ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -94,8 +94,8 @@ class FormacionAcademicaResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //
-            ];
+            //
+        ];
     }
 
     public static function getPages(): array

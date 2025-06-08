@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('programa_educativos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->unsignedBigInteger('departamento_id')->unique();
+            $table->unsignedBigInteger('departamento_id');
 
             $table->foreign('departamento_id')->references('id')->on('departamentos');
             $table->timestamps();
