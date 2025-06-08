@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,8 +17,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('categoria');
             $table->enum('carga_horaria', ['PTC', 'PMT', 'PA']);
+            $table->unsignedBigInteger('division_id');
 
-            $table->string('departamento');
+            $table->foreign('division_id')->references('id')->on('divisiones');
             $table->unsignedBigInteger('departamento_id')->unique();
 
             $table->foreign('departamento_id')->references('id')->on('departamentos');
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->tinyInteger('horas');
             $table->enum('tipo_contrato', ['defenitivo', 'emerito', 'honorario', 'interino', 'temporal']);
             $table->date('vencimiento');
+
             $table->timestamps();
         });
     }

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departamentos', function (Blueprint $table) {
+        Schema::create('programa_educativos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->unsignedBigInteger('division_id');
+            $table->unsignedBigInteger('departamento_id')->unique();
 
-            $table->foreign('division_id')->references('id')->on('divisiones');
+            $table->foreign('departamento_id')->references('id')->on('departamentos');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departamentos');
+        Schema::dropIfExists('programa_educativos');
     }
 };

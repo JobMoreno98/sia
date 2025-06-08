@@ -42,7 +42,7 @@ return new class extends Migration
 
             $table->string('institucion');
             $table->string('pais');
-            $table->date('anio');
+            $table->year('anio');
             $table->boolean('curso')->default(0);
             
             $table->timestamps();

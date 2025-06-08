@@ -23,8 +23,10 @@ class EditInformacionPage extends Page implements Forms\Contracts\HasForms
 
 
     public array $data = [];
-
+    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Mi Perfil';
     protected static ?string $navigationLabel = 'Mi Información';
+    protected static ?string $title = 'Mi Información';
     protected static string $view = 'filament.user.pages.edit-informacion-page';
 
     public function mount(): void
@@ -139,7 +141,7 @@ class EditInformacionPage extends Page implements Forms\Contracts\HasForms
                             \Log::info('Valores de los campos:', $valores);
 
                             $total = self::calcularTotal($get);
-                            $color = $total === 100 ? 'green' : 'red';
+                            $color = ($total <= 100 && $total > 0) ? 'green' : 'red';
                             return new HtmlString("<span style='color: {$color}; font-weight: bold;'>{$total}% del 100%</span>");
                         })
                         ->reactive(),

@@ -17,74 +17,65 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class FormacionAcademicaResource extends Resource
 {
     protected static ?string $model = FormacionAcademica::class;
+    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationGroup = 'Mi Perfil';
+    protected static ?string $navigationLabel = 'Formación Académica';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+        public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('user_id', Auth::id());
+    }
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('nombre')
-                    ->label('Nombre')
-                    ->required(),
+        return $form->schema([
+            TextInput::make('nombre')->label('Nombre')->required(),
 
-                Select::make('grado')
-                    ->label('Grado')
-                    ->options([
-                        'Licenciatura' => 'Licenciatura',
-                        'Maestria' => 'Maestria',
-                        'Doctorado' => 'Doctorado',
-                        'Postdoctorado' => 'Postdoctorado',
-                        'Especializacion' => 'Especializacion',
-                        'Actualizacion' => 'Actualizacion',
-                        'Estudios' => 'Estudios',
-                    ])
-                    ->required(),
+            Select::make('grado')
+                ->label('Grado')
+                ->options([
+                    'Licenciatura' => 'Licenciatura',
+                    'Maestria' => 'Maestria',
+                    'Doctorado' => 'Doctorado',
+                    'Postdoctorado' => 'Postdoctorado',
+                    'Especializacion' => 'Especializacion',
+                    'Actualizacion' => 'Actualizacion',
+                    'Estudios' => 'Estudios',
+                ])
+                ->required(),
 
-                Select::make('conocimiento_id')
-                    ->label('Área de Conocimiento')
-                    ->relationship(
-                        name: 'conocimiento',
-                        titleAttribute: 'nombre',
-                        modifyQueryUsing: fn($query) => $query->where('tipo', 'Área de Conocimiento')
-                    )
-                    ->searchable()
-                    ->required(),
+            Select::make('conocimiento_id')
+                ->label('Área de Conocimiento')
+                ->relationship(name: 'conocimiento', titleAttribute: 'nombre', modifyQueryUsing: fn($query) => $query->where('tipo', 'Área de Conocimiento'))
 
-                Select::make('disciplina_id')
-                    ->label('Disciplina')
-                    ->relationship(
-                        name: 'disciplina',
-                        titleAttribute: 'nombre',
-                        modifyQueryUsing: fn($query) => $query->where('tipo', 'Disciplina')
-                    )
-                    ->searchable()
-                    ->required(),
+                ->required()
+                ->native(false),
 
-                TextInput::make('institucion')
-                    ->label('Institución')
-                    ->required(),
+            Select::make('disciplina_id')
+                ->label('Disciplina')
+                ->relationship(name: 'disciplina', titleAttribute: 'nombre', modifyQueryUsing: fn($query) => $query->where('tipo', 'Disciplina'))
 
-                TextInput::make('pais')
-                    ->label('País')
-                    ->required(),
+                ->required()
+                ->native(false),
 
-                DatePicker::make('anio')
-                    ->label('Año')
-                    ->native(false) // desactiva el picker nativo del navegador
-                    ->displayFormat('Y') // muestra solo el año
-                    ->format('Y') // guarda como solo el año en la base de datos
-                    ->required(),
-                ToggleButtons::make('curso')
-                    ->label('En curso')
-                    ->boolean()
-                    ->grouped()
+            TextInput::make('institucion')->label('Institución')->required(),
 
-            ]);
+            TextInput::make('pais')->label('País')->required(),
+
+            DatePicker::make('anio')
+                ->label('Año')
+                ->native(false) // desactiva el picker nativo del navegador
+                ->displayFormat('Y') // muestra solo el año
+                ->format('Y') // guarda como solo el año en la base de datos
+                ->required(),
+            ToggleButtons::make('curso')->label('En curso')->boolean()->grouped(),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -96,21 +87,15 @@ class FormacionAcademicaResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->actions([Tables\Actions\EditAction::make()])
+            ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
-        ];
+                //
+            ];
     }
 
     public static function getPages(): array

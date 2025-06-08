@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FormacionAcademica extends Model
 {
-
+protected $guarded = [];
     public function disciplina()
     {
         return $this->belongsTo(Disciplinas::class, 'disciplina_id');
