@@ -85,4 +85,8 @@ class DepartamentosResource extends Resource
             'edit' => Pages\EditDepartamentos::route('/{record}/edit'),
         ];
     }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

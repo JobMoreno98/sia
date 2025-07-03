@@ -29,7 +29,7 @@ class ProgramaEducativoResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Select::make('departamento_id')
-                    ->label('División')
+                    ->label('Departamento')
                     ->relationship(
                         name: 'departamento',
                         titleAttribute: 'nombre',
@@ -47,13 +47,9 @@ class ProgramaEducativoResource extends Resource
                 Tables\Columns\TextColumn::make('departamento.nombre')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('Creado')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('departamento.division.nombre')
+                    ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -82,5 +78,9 @@ class ProgramaEducativoResource extends Resource
             'create' => Pages\CreateProgramaEducativo::route('/create'),
             'edit' => Pages\EditProgramaEducativo::route('/{record}/edit'),
         ];
+    }
+        public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }
