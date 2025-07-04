@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->enum('grado', ['Dr.', 'Dra.', 'Mtro.', 'Mtra', 'Lic.']);
             $table->string('disciplina');
             $table->string('correo');
-            $table->string('correo_alternativo');
+            $table->string('correo_alternativo')->nullable();
 
 
 

@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('plan_estudios', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('user_id')->unique();
+
+            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->string('nombre');
+            $table->enum('grado', ['Licenciatura', 'Especialidad', 'Maestria', 'Doctorado', 'Postdoctorado']);
+            $table->string('descripcion');
+            $table->year('anio');
             $table->timestamps();
         });
     }

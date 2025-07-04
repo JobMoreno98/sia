@@ -16,6 +16,7 @@ class CreateFormacionAcademica extends CreateRecord
         $data['user_id'] = auth()->id();
         return $data;
     }
+    
     public function getTitle(): string|Htmlable
     {
         return 'Crear Formación Académica';
